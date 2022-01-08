@@ -1,4 +1,4 @@
-use tide::{Request, Response, Body};
+use tide::{Request, Response, Body, Server};
 use tide::prelude::{Deserialize, Serialize};
 use std::sync::Arc;
 use async_std::sync::RwLock;
@@ -16,13 +16,22 @@ struct State {
     dinos: Arc<RwLock<HashMap<String, Dino>>>
 }
 
+async fn server(dinos_store: Arc<RwLock<HashMap<String, Dino>>>) -> Server<State> {
+    let state = State {
+        dinos: dinos_store,
+    };
+
+    let mut app = tide::with_state(state);
+
+    app.at("/").get(|_| async move { Ok("ok") });
+    app
+}
+
 #[async_std::main]
 async fn main() -> Result<(), std::io::Error> {
-    let state = State {
-        dinos: Default::default()
-    };
     tide::log::start();
-    let mut app = tide::with_state(state);
+    let dinos_store = Default::default();
+    let mut app = server(dinos_store).await;
 
     app.at("/").get(|_| async { Ok("Hello, world!") });
 
