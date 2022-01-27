@@ -7,17 +7,26 @@ async fn main() {
 
   assert_eq!(rx + 1, 11);
 
-  println!("x={:?}", match_point(Point { x: 0, y: 2 }));
+  let account = Account { name: "maotingfeng".to_string(), language: "chinese".to_string() };
+
+  let a = match account {
+    Account { ref name, .. } => {
+      greet(&name);
+      2
+    },
+    _ => 1,
+  };
+  let bbb = account;
 }
 
-struct Point {
-  x: i32,
-  y: i32,
+fn greet(name: &str) -> i32 {
+  println!("{:?}", name);
+  return 2;
 }
 
-fn match_point(bollon: Point) -> i32 {
-  match bollon {
-    Point { x: 0, y: height } => height,
-    Point { x, y } => x + y,
-  }
+#[derive(Debug)]
+struct Account {
+  name: String,
+  language: String,
 }
+
