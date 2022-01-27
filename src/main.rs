@@ -1,18 +1,24 @@
-use std::fmt::{ Debug, Formatter };
-
-struct Point {
-    x: i32,
-    y: i32,
-}
-
-impl Debug for Point {
-    fn fmt(&self, f: &mut Formatter) -> std::result::Result<(), std::fmt::Error> {
-        write!(f, "Point {{ x: {}, y: {} }}", self.x, self.y)
-    }
-}
 
 #[async_std::main]
 async fn main() {
-    let origin = Point { x: 1, y: 2 };
-    println!("the origin = {:?}", origin);
+  let x = 10;
+  
+  let rx = &x;
+
+  assert_eq!(rx + 1, 11);
+
+  println!("你: {:?}", desribe_point(-2, 2));
+}
+
+fn desribe_point(x: i32, y: i32) -> &'static str {
+  use std::cmp::Ordering::*;
+
+  match (x.cmp(&0), y.cmp(&0))  {
+    (Equal, Equal) => "at the origin",
+    (_, Equal) => "on the x axis",
+    (Equal, _) => "on the y axis",
+    (Greater, Greater) => "in the first quadrant",
+    (Less, Greater) => "in the second quadrant",
+    _ => "somewhere else"
+  }
 }
