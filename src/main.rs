@@ -7,18 +7,17 @@ async fn main() {
 
   assert_eq!(rx + 1, 11);
 
-  println!("你: {:?}", desribe_point(-2, 2));
+  println!("x={:?}", match_point(Point { x: 0, y: 2 }));
 }
 
-fn desribe_point(x: i32, y: i32) -> &'static str {
-  use std::cmp::Ordering::*;
+struct Point {
+  x: i32,
+  y: i32,
+}
 
-  match (x.cmp(&0), y.cmp(&0))  {
-    (Equal, Equal) => "at the origin",
-    (_, Equal) => "on the x axis",
-    (Equal, _) => "on the y axis",
-    (Greater, Greater) => "in the first quadrant",
-    (Less, Greater) => "in the second quadrant",
-    _ => "somewhere else"
+fn match_point(bollon: Point) -> i32 {
+  match bollon {
+    Point { x: 0, y: height } => height,
+    Point { x, y } => x + y,
   }
 }
