@@ -1,0 +1,46 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable 'tide-basic-crud'",
+      "cargo": {
+        "args": [
+          "build",
+          "--bin=tide-basic-crud",
+          "--package=tide-basic-crud"
+        ],
+        "filter": {
+          "name": "tide-basic-crud",
+          "kind": "bin"
+        }
+      },
+      "program": "${workspaceRoot}/target/debug/tide-basic-crud",
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in executable 'tide-basic-crud'",
+      "cargo": {
+        "args": [
+          "test",
+          "--no-run",
+          "--bin=tide-basic-crud",
+          "--package=tide-basic-crud"
+        ],
+        "filter": {
+          "name": "tide-basic-crud",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

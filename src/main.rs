@@ -1,16 +1,18 @@
-use std::io::Write;
+use std::fs;
 
-#[async_std::main]
-async fn main() {
-  let mut bytes: Vec<u8> = vec![];
+fn main() {
+    let url = "https://www.rust-lang.org/";
+    let output = "rust.md";
 
-  say_hello(&mut bytes);
+    println!("Fetching url: {}", url);
 
-  println!("list={:?}", bytes);
-}
+    let body = reqwest::blocking::get(url).unwrap().text().unwrap();
 
+    println!("Converting html to markdown...");
 
-fn say_hello(out: &mut dyn Write) {
-  out.write_all(b"hello world\n");
-  out.flush();
+    let md = html2md::parse_html(&body);
+
+    fs::write(output, md.as_bytes());
+
+    println!("converted markdown has been saved in {}", output);
 }
