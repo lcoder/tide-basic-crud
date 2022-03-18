@@ -1,18 +1,52 @@
-use std::fs;
+#[derive(Debug)]
+enum Gender {
+    Unspecified = 0,
+    Female = 1,
+    Male = 2,
+}
+
+#[derive(Debug, Copy, Clone)]
+struct  UserId(u64);
+
+#[derive(Debug, Copy, Clone)]
+struct TopicId(u64);
+
+#[derive(Debug)]
+struct User {
+    id: UserId,
+    name: String,
+    gender: Gender,
+}
+
+#[derive(Debug)]
+struct Topic {
+    id: TopicId,
+    name: String,
+    owner: UserId,
+}
+
+#[derive(Debug)]
+enum Event {
+    Join((UserId, TopicId)),
+    Leave((UserId, TopicId)),
+    Message((UserId, TopicId, String)),
+}
 
 fn main() {
-    let url = "https://www.rust-lang.org/";
-    let output = "rust.md";
+    let alice = User { id: UserId(1), name: "Alice".into(), gender: Gender::Female };
+    let bob = User { id: UserId(2), name: "Bolb".into(), gender: Gender::Male };
 
-    println!("Fetching url: {}", url);
+    let topic = Topic {
+        id: TopicId(1),
+        name: "rust".into(),
+        owner: UserId(1),
+    };
 
-    let body = reqwest::blocking::get(url).unwrap().text().unwrap();
+    let event1 = Event::Join((alice.id, topic.id));
 
-    println!("Converting html to markdown...");
+    let event2 = Event::Leave((bob.id, topic.id));
 
-    let md = html2md::parse_html(&body);
+    let event3 = Event::Message((alice.id, topic.id, "Hello world!".into()));
 
-    fs::write(output, md.as_bytes());
-
-    println!("converted markdown has been saved in {}", output);
+    println!("event1: {:?}, event2: {:?}, event3: {:?}", event1, event2, event3);
 }
